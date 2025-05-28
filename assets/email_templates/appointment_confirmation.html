@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reserva confirmada</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f9;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 12px #eee;
+      }
+      .title {
+        color: #d16ba5;
+      }
+      .button {
+        background: #d16ba5;
+        color: white;
+        padding: 10px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">¡Cita Reservada con Éxito!</h1>
+      <p>Hola {{ name }},</p>
+      <p>Tu cita ha sido reservada para:</p>
+      <ul>
+        <li><strong>Fecha:</strong> {{ date }}</li>
+        <li><strong>Servicio(s):</strong> {{ services }}</li>
+      </ul>
+      <p>
+        ¡Te esperamos! Si necesitas cambiar tu cita, responde a este correo o
+        contáctanos.
+      </p>
+      <a href="{{ link }}" class="button">Ver mi cita</a>
+    </div>
+  </body>
+</html>

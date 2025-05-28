@@ -1,0 +1,95 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# dotenv
+.env
+.env.*
+
+# Alembic
+alembic/versions/*.pyc
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local assets
+assets/email_templates/*.pyc
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore seed data
+seed.pyc
+
+# Ignore compiled files
+*.pyd
+
+# Ignore backup files
+*~
+
+# Ignore test output
+*.out
+
+# Ignore requirements lock files
+poetry.lock
+Pipfile.lock
+
+# Ignore wheel files
+*.whl
