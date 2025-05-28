@@ -93,3 +93,6 @@ Pipfile.lock
 
 # Ignore wheel files
 *.whl
+
+#Ignore .venv
+.venv/
