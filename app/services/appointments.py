@@ -79,7 +79,7 @@ async def create_appointment(db: AsyncSession, appointment: app.schemas.Appointm
     )
     db.add(db_appointment)
     await db.commit()
-
+    """
     html_body = render_appointment_email(
         name=db_appointment.client.name,
         date=db_appointment.date.strftime("%d-%m-%Y %H:%M"),
@@ -92,6 +92,7 @@ async def create_appointment(db: AsyncSession, appointment: app.schemas.Appointm
         subject="¡Tu cita ha sido reservada!",
         html_body=html_body,
     )
+    """
 
     result = await db.execute(
         select(app.models.Appointment)
