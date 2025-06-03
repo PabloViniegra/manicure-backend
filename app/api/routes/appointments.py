@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
+from typing import List, Optional
 import app.schemas
 from app.database import get_db
 import app.schemas.appointments
@@ -10,7 +11,8 @@ from app.services.appointments import create_appointment, get_appointments, get_
 from app.dependencies import get_current_active_user, get_current_admin, get_current_staff_or_admin
 from sqlalchemy.future import select
 from app.schemas.cancelation import CancelationCreate, CancelationRead
-
+from app.models import Appointment
+from sqlalchemy.orm import selectinload
 
 router = APIRouter()
 
@@ -154,3 +156,26 @@ async def complete_appointment_endpoint(
         raise HTTPException(
             status_code=403, detail="You do not have permission to complete appointments")
     return await complete_appointment(db, appointment_id)
+
+
+@router.get('/blocked', response_model=List[app.schemas.appointments.BlockedSlot])
+async def get_blocked_slots(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Appointment)
+        .options(selectinload(Appointment.services))
+        .where(Appointment.status.in_(['pending', 'confirmed']))
+    )
+    appointments = result.scalars().all()
+    blocked_slots = []
+    for appt in appointments:
+        duration = sum(s.duration for s in appt.services)
+        start = appt.date
+
+        if isinstance(start, str):
+            start = datetime.fromisoformat(start)
+        end = start + timedelta(minutes=duration)
+        blocked_slots.append(app.schemas.appointments.BlockedSlot(
+            start=start.isoformat(),
+            end=end.isoformat()
+        ))
+    return blocked_slots

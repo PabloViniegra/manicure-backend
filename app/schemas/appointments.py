@@ -50,3 +50,8 @@ class AppointmentUpdate(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class BlockedSlot(BaseModel):
+    start: str
+    end: str
