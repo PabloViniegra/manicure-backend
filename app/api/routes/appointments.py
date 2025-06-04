@@ -159,12 +159,11 @@ async def complete_appointment_endpoint(
 
 
 @router.get('/blocked', response_model=List[app.schemas.appointments.BlockedSlot])
-async def get_blocked_slots(db: AsyncSession = Depends(get_db), user: app.models.User = Depends(get_current_active_user)):
+async def get_blocked_slots(db: AsyncSession = Depends(get_db), user: app.schemas.users.UserRead = Depends(get_current_active_user)):
     result = await db.execute(
         select(Appointment)
         .options(selectinload(Appointment.services))
         .where(Appointment.status.in_(['pending', 'confirmed']))
-        .where(Appointment.client_id != user.id)
     )
     appointments = result.scalars().all()
     blocked_slots = []
