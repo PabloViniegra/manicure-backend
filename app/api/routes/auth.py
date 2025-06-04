@@ -3,11 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import OAuth2PasswordRequestForm
 from app.database import get_db
 from app.schemas import Token, UserRead, UserCreate
-from app.schemas.users import RegisterRequest
+from app.schemas.users import RegisterRequest, UserClient
 from app.schemas.clients import ClientCreate
 from app.security import create_access_token
-from app.services.user_service import authenticate_user, create_user
+from app.services.user_service import authenticate_user, create_user, get_client_me
 from app.services.clients import create_client
+from app.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -66,3 +67,17 @@ async def register(
         address=req.address
     ), user_id=user.id)
     return user
+
+
+@router.get('/me', response_model=UserClient)
+async def read_user_me(
+    db: AsyncSession = Depends(get_db),
+    current_user: UserRead = Depends(get_current_user)
+):
+    """
+    Get the current authenticated user's information.
+
+    - **Authentication:** Requires an authenticated user
+    - **Response:** UserClient object with the user's details
+    """
+    return await get_client_me(db=db, current_user=current_user)

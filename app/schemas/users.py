@@ -3,6 +3,14 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 
+class UserClient(BaseModel):
+    email: EmailStr
+    full_name: Optional[str] = None
+    role: Optional[str] = 'client'
+    id: int
+    client_id: int
+
+
 class UserBase(BaseModel):
     email: EmailStr
     full_name: Optional[str] = None
