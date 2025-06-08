@@ -15,6 +15,7 @@ from app.services.notifications import send_notification_email
 from app.models.cancelation import Cancelation
 from app.schemas.cancelation import CancelationRead
 from app.models.appointment import Appointment
+from app.models.client import Client
 from app.utils import make_naive
 
 
@@ -261,7 +262,9 @@ async def delete_appointment(
     if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
 
-    if not (current_user.role == 'admin' or appointment.client_id == current_user.id):
+    client = await db.execute(select(Client).where(Client.user_id == current_user.id))
+    client = client.scalar_one_or_none()
+    if not (current_user.role == 'admin' or (client and appointment.client_id == client.id)):
         raise HTTPException(
             status_code=403, detail="Not authorized to delete this appointment")
 
