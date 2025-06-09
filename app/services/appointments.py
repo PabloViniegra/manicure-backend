@@ -254,7 +254,7 @@ async def delete_appointment(
         - 404 if appointment is not found
         - 403 if user is not authorized
     - **Returns:**
-        - Appointment deleted
+        - None
     """
     result = await db.execute(select(app.models.Appointment).where(app.models.Appointment.id == appointment_id))
 
@@ -267,12 +267,9 @@ async def delete_appointment(
     if not (current_user.role == 'admin' or (client and appointment.client_id == client.id)):
         raise HTTPException(
             status_code=403, detail="Not authorized to delete this appointment")
-    appointment_data = app.schemas.appointments.AppointmentRead.model_validate(
-        appointment)
 
     await db.delete(appointment)
     await db.commit()
-    return appointment_data
 
 
 async def cancel_appointment(

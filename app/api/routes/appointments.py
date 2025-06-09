@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends, Query, HTTPException
+from fastapi import APIRouter, Depends, Query, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 import app.schemas
@@ -101,7 +101,7 @@ async def patch_appointment_endpoint(
     return await update_appointment(db, appointment_id, appointment_in, current_user)
 
 
-@router.delete('/{appointment_id}', response_model=app.schemas.appointments.AppointmentRead)
+@router.delete('/{appointment_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_appointment_endpoint(
     appointment_id: int,
     db: AsyncSession = Depends(get_db),
